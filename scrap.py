@@ -26,7 +26,7 @@ except Exception as e:
     print(e)
     exit(1)
 
-fallacies_file = open("data/fallacies.txt", "a+")
+fallacies_file = open("data/fallacies.txt", "w")
 while True:
     try:
         # Wait til web page loads
