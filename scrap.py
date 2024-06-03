@@ -30,7 +30,8 @@ except Exception as e:
 fallacies_file = open("data/fallacies.txt", "w")
 
 print("[INFO] Getting all fallacies...")
-while True:
+max_trying_attempt = 3
+while max_trying_attempt > 0:
     try:
         # Wait til web page loads
         fallacy_title = wait.until(EC.visibility_of(chrome.find_element(
@@ -43,6 +44,7 @@ while True:
 
     except selenium.common.TimeoutException:
         print("Timout occured while trying to get title\nTrying again...")
+        max_trying_attempt -= 1
         continue
 
     except Exception as e:
@@ -72,5 +74,9 @@ while True:
 
 fallacies_file.close()
 
-print("Finished fetching.")
-print(f"Got {len(all_fallacies)} fallacies.")
+if max_trying_attempt <= 0 or len(all_fallacies) == 0:
+    print("Couldnot get fallacies")
+
+else:
+    print("Finished fetching.")
+    print(f"Got {len(all_fallacies)} fallacies.")
