@@ -1,3 +1,5 @@
+# script to scrap all the logical fallacies from https://www.yourlogicalfallacyis.com/
+
 from selenium import webdriver
 import selenium.common
 from selenium.webdriver.support import expected_conditions as EC
@@ -6,7 +8,6 @@ from selenium.webdriver.common.by import By
 import selenium
 
 import os
-# To get all the logical fallacies
 
 URL = "https://www.yourlogicalfallacyis.com/strawman"
 
@@ -27,6 +28,8 @@ except Exception as e:
     exit(1)
 
 fallacies_file = open("data/fallacies.txt", "w")
+
+print("[INFO] Getting all fallacies...")
 while True:
     try:
         # Wait til web page loads
@@ -51,6 +54,8 @@ while True:
     p_contents = chrome.find_elements(
         By.CSS_SELECTOR, "article.fallacy-detailed .body > p")
 
+    print(f"[INFO] Got '{fallacy_title.text} fallacy'")
+
     # Writing in file
     fallacies_file.write(f"TITLE: {fallacy_title.text}\n")
     fallacies_file.write(f"DESC: {short_description.text}\n")
@@ -66,3 +71,6 @@ while True:
     chrome.get(chrome.current_url)
 
 fallacies_file.close()
+
+print("Finished fetching.")
+print(f"Got {len(all_fallacies)} fallacies.")
