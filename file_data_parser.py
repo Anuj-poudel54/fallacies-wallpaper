@@ -1,5 +1,8 @@
+""" Parser for data in files """
+
 from pathlib import Path
 import json
+from typing import Generator
 
 class FileParser:
     """ Parser for file """
@@ -8,7 +11,7 @@ class FileParser:
 
         self.file_path = file_path or Path("./data/fallacies.txt")
 
-    def get_next_fallacy(self):
+    def get_next_fallacy(self) -> Generator[dict[str, str]]:
         """ Generator for returning next line from the file """
         with open(self.file_path, "r") as f:
             while fallacy := f.readline(): ## f.readlines() returns "" at eof
