@@ -8,7 +8,8 @@ from selenium.webdriver.common.by import By
 import selenium
 
 import os
-import json
+
+from data_type import Fallacy
 
 URL = "https://www.yourlogicalfallacyis.com/strawman"
 
@@ -60,13 +61,17 @@ while max_trying_attempt > 0:
     print(f"[INFO] Got '{fallacy_title.text} fallacy'")
 
     # Writing in file
+
     fallacy = {
         "title": fallacy_title.text.replace("\n", " ").strip("\n"),
         "desc": short_description.text.replace("\n", " ").strip("\n"),
         "ext_desc": p_contents[0].text.replace("\n", " ").strip("\n"),
         "example": p_contents[1].text.replace("\n", " ").strip("\n"),
     }
-    fallacies_file.write( json.dumps(fallacy) )
+
+    fallacy = Fallacy( **fallacy )
+
+    fallacies_file.write( fallacy.model_dump_json() )
     fallacies_file.write("\n")
 
     # Clicking next button
