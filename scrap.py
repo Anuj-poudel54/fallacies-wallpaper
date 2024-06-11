@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 import selenium
 
 import os
+import json
 
 URL = "https://www.yourlogicalfallacyis.com/strawman"
 
@@ -59,11 +60,14 @@ while max_trying_attempt > 0:
     print(f"[INFO] Got '{fallacy_title.text} fallacy'")
 
     # Writing in file
-    fallacies_file.write(f"TITLE: {fallacy_title.text}\n")
-    fallacies_file.write(f"DESC: {short_description.text}\n")
-    fallacies_file.write(f"EXT DESC: {p_contents[0].text}\n")
-    fallacies_file.write(f"EXAMPLE: {p_contents[1].text}\n")
-    fallacies_file.write("")
+    fallacy = {
+        "title": fallacy_title.text.replace("\n", " ").strip("\n"),
+        "desc": short_description.text.replace("\n", " ").strip("\n"),
+        "ext_desc": p_contents[0].text.replace("\n", " ").strip("\n"),
+        "example": p_contents[1].text.replace("\n", " ").strip("\n"),
+    }
+    fallacies_file.write( json.dumps(fallacy) )
+    fallacies_file.write("\n")
 
     # Clicking next button
     next_button = chrome.find_element(By.CSS_SELECTOR, "span.next")
