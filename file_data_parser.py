@@ -11,7 +11,7 @@ class FileParser:
 
         self.file_path = file_path or Path("./data/fallacies.txt")
 
-    def get_next_fallacy(self) -> Generator[dict[str, str]]:
+    def get_next_fallacy(self) -> Generator[dict[str, str], None, None]:
         """ Generator for returning next line from the file """
         with open(self.file_path, "r") as f:
             while fallacy := f.readline(): ## f.readlines() returns "" at eof
